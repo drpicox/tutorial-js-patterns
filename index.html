@@ -1,6 +1,26 @@
 <html>
 <head>
 	<title>JS and Patterns</title>
+	<style>
+		code {
+			font: monospace;
+			white-space: pre;
+			overflow-x: auto;
+			background: #ddd;
+			color: #222;
+			display: block;
+			max-width: 90%;
+			margin-left: 2%;
+			margin-right: 7%;
+			padding-left: 1%;
+		}
+		body {
+			margin: 10px;
+		}
+		h2 {
+
+		}
+	</style>
 </head>
 <body>
 	<h1>JS and Patterns</h1>
@@ -15,5 +35,77 @@
 		<li><a href="http://david-rodenas.com/JSandPatterns.pdf">JS and Patterns presentation</a></li>
 		<li><a href="https://github.com/drpicox/tutorial-js-patterns" target="_blank">Fork me in GitHub -&gt;</a></li>
 	</ul>
+
+	<h2>Tutorial</h2>
+	<p>
+		This page present a simple example of MVC applied. 
+		MVC stands for Model-View-Controller.
+		All web page functionalities are divided in separated components, 
+		these components collaborates in order to provide a the web-app behaviour/view.
+		Although it seems that it is more complex to build, 
+		it structures components with high cohesion and low coupling, so
+		in large term, it is easier to add and change behaviour/views.
+	</p>
+
+	<h3>Model</h3>
+	<p>
+		Model is basically data. It can be something that can be read from the server,
+		user preferences, a list of things, a thing, information about which button is pushed...
+		We can see it as just JSON: 
+	</p>
+	<code>
+{ 
+    "name": "John",
+    "surname": "Smith", 
+}
+	</code>
+	<p>
+		In addition, models also can have functions to provide some queries:
+	</p>
+	<code>
+{ 
+    name: 'John',
+    surname: 'Smith', 
+    getFullName: function() {
+        return this.name +' '+ this.surname;
+    },
+}
+	</code>
+	<p>
+		Models can be categorized by kind, each kind of model has its own fields and
+		supporting functions. We should create a component to handle each kind of model.
+		An example of model should be:
+	</p>
+	<code>
+function User(data) {
+	this.name = data.name;
+	this.surname = data.surname;
+}
+User.getFullName = function() {
+    return this.name +' '+ this.surname;
+};
+	</code>
+	<p>
+		When a new model is created it just is instanced from the model. Example:
+	</p>
+	<code>
+// create
+var johnSmith = new User({
+    name: 'John',
+    surname: 'Smith', 
+});
+
+// and use
+console.log(johnSmith.getFullName());
+	</code>
+	<p>Full examples are:</p>
+	<ul>
+		<li>jQuery: <a href="jquery/Model.js">auxiliary class</a>, <a href="jquery/UserModel.js">user model</a></li>
+		<li>Angular: <a href="angular/UserModel.js">user model</a></li>
+	</ul>
+	<p><emph>Note</emph>: in jQuery there is an auxiliary class because models needs to be watched</p>
+
+
+
 </body>
 </html>

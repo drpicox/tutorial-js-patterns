@@ -1,7 +1,7 @@
 /*
 	Model
-		.observe()
-		._notify()
+		.observe(fn)  <- function to register an observer
+		.notify()     <- function to be called after the model is changed to notify observers
 */
 function Model(data) {
 	$.extend(this, data);

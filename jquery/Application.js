@@ -3,8 +3,9 @@ var Application = {
 
 	launch: function() {
 
-		UserViewController.launch();
 		UserFormViewController.launch();
+		UserFullNameViewController.launch();
+		UserViewController.launch();
 	},
 }
 

@@ -12,5 +12,10 @@ angular.module('drpicox.JsPatterns').factory('User',
 	function User(data) {
 		angular.copy(data, this);
 	};
+
+	User.prototype.getFullName = function() {
+		return this.name +' '+ this.surname;
+	};
+	
 	return User;
 }]);
