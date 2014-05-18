@@ -107,6 +107,9 @@ console.log(johnSmith.getFullName());
 		A plain html needs a Javascript to link models and events to the html:
 	</p>
 	<code>
+function UserHelloView(data) {
+	$.extend(this, data);	
+}
 UserHelloView.prototype.link = function (dom) {
 	var view = this;
 	// update html with changes in the user
@@ -123,17 +126,43 @@ UserHelloView.prototype.link = function (dom) {
 	<p>
 		The view Javascript part has an interface which can be used directly by controllers.
 		The view itself never will use a controller directly (only via callbacks, like <emph>sendHelo</emph>).
-		This is how the controller sets up a view:
+		Look to View Controllers for more information.
+	</p>
+	<p>Full examples are:</p>
+	<ul>
+		<li>jQuery: <a href="jquery/UserFormView.js">user form view</a></li>
+		<li>Angular: <a href="angular/UserFormView.html">user form view</a></li>
+	</ul>
+
+
+	<h3>Controllers</h3>
+	<p>
+		Controllers are everything else. Is what prepares views, loads data, saves values, 
+		handles events reactions, etc. Usually they are confused as simple view controllers,
+		but if you want to have high cohesion and low coupling you should consider specialized
+		kinds of controllers: View Controllers, Flow/Route Controllers, Storage Controllers, ...
+	</p>
+
+	<h3>View Controllers</h3>
+	<p>
+		A view controller is a controller that instances a view, sets up this view, and 
+		shows it to the user.
+		This is how the controller sets up a view (remember that view provides an interface):
 	</p>
 	<code>
 // controller code setting up a view
 view = new UserHelloView();
-view.user = UserStorage.retrieve(userId);
+view.user = UserService.get(userId);
 view.sendHello = function() {
 	UserWaver.sendHello(userId);
 };
 view.link(currentDom);
 	</code>
+	<p>Full examples are:</p>
+	<ul>
+		<li>jQuery: <a href="jquery/UserFormViewController.js">user form view controller</a></li>
+		<li>Angular: <a href="angular/UserFormViewDirective.html">user form view directive</a> (a controller)</li>
+	</ul>
 
 </body>
 </html>

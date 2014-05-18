@@ -1,4 +1,5 @@
-function UserFormView() {
+function UserFormView(data) {
+	$.extend(this, data);
 }
 
 UserFormView.prototype.link = function(element) {
