@@ -17,6 +17,8 @@
 		<li><a href="https://github.com/drpicox/tutorial-js-patterns" target="_blank">Fork me in GitHub -&gt;</a> (look sources)</li>
 	</ul>
 
+
+
 	<h2>Tutorial</h2>
 	<p>
 		This page present a simple example of MVC applied. 
@@ -28,10 +30,11 @@
 		in large term, it is easier to add and change behaviour/views.
 	</p>
 
+
 	<h3>Model</h3>
 	<p>
 		Model is basically data. It can be something that can be read from the server,
-		user preferences, a list of things, a thing, information about which button is pushed...
+		user preferences, a list of things, a thing, information about which button is pushed, etc.
 		We can see it as just JSON: 
 	</p>
 	<code>
@@ -87,6 +90,50 @@ console.log(johnSmith.getFullName());
 	<p><emph>Note</emph>: in jQuery there is an auxiliary class because models needs to be watched</p>
 
 
+	<h3>View</h3>
+	<p>
+		View is basically html. View is what is shown to the user, and what the user can use to interact.
+		View presents model information (watches models for changes), and captures events so some
+		kind of interaction can be performed on model.
+	</p>
+	<code>
+&lt;div>
+	&lt;span class="bind-user-name">&lt;/span>&lt;br>
+	&lt;span class="bind-user-surname">&lt;/span>&lt;br>
+	&lt;button class="action-send-hello">&lt;/button>
+&lt;/div>
+	</code>
+	<p>
+		A plain html needs a Javascript to link models and events to the html:
+	</p>
+	<code>
+UserHelloView.prototype.link = function (dom) {
+	var view = this;
+	// update html with changes in the user
+	view.user.observe(function(user) {
+		$('.bind-user-name').text(user.name);
+		$('.bind-user-surname').text(user.surname);		
+	});
+	// listen for events
+	$('.action-send-hello').click(function() {
+		view.sendHello();
+	});
+},
+	</code>
+	<p>
+		The view Javascript part has an interface which can be used directly by controllers.
+		The view itself never will use a controller directly (only via callbacks, like <emph>sendHelo</emph>).
+		This is how the controller sets up a view:
+	</p>
+	<code>
+// controller code setting up a view
+view = new UserHelloView();
+view.user = UserStorage.retrieve(userId);
+view.sendHello = function() {
+	UserWaver.sendHello(userId);
+};
+view.link(currentDom);
+	</code>
 
 </body>
 </html>
