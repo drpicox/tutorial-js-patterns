@@ -140,8 +140,9 @@ UserHelloView.prototype.link = function (dom) {
 		Controllers are everything else. Is what prepares views, loads data, saves values, 
 		handles events reactions, etc. Usually they are confused as simple view controllers,
 		but if you want to have high cohesion and low coupling you should consider specialized
-		kinds of controllers: View Controllers, Flow/Route Controllers, Storage Controllers, ...
+		kinds of controllers: View Controllers, Flow/Route Controllers, Storage/Service Controllers, ...
 	</p>
+
 
 	<h3>View Controllers</h3>
 	<p>
@@ -158,10 +159,71 @@ view.sendHello = function() {
 };
 view.link(currentDom);
 	</code>
+	<p>
+		View controllers should only use Storage/Service controllers and views.
+		About models they should know as little bit as possible.
+	</p>
 	<p>Full examples are:</p>
 	<ul>
 		<li>jQuery: <a href="jquery/UserFormViewController.js">user form view controller</a></li>
 		<li>Angular: <a href="angular/UserFormViewDirective.html">user form view directive</a> (a controller)</li>
+	</ul>
+
+
+	<h3>Storage/Service Controllers</h3>
+	<p>
+		Services and Storage Controllers deals primarily with data. 
+		They are responsible to load and save data.
+		They are a centric point to manage each kind of data or application behaviour.
+		Data can be stored in the client, just be a variable, or recovered and stored in an external
+		server (service).
+		When the application need to deal with some data, storage/service controllers make all loads
+		and saves. It usually uses promises to return data, so it do not require a predefined callback
+		to know when data is available.
+	</p>
+	<code>
+var UserService = {
+	get: function() {
+		return $http({method: 'GET', url: '/api/me'}).then(function(response) {
+			if (response.status >= 300) { throw response; }
+			return response.data;
+		});
+	},
+	...
+};
+	</code>
+	<p>
+		Storage/Service controllers should only use Models, and in some ocasions other
+		storage/service controllers (for example: a controller that tries to load data from
+		an IndexedDb and if it is not present from a remote service).
+	</p>
+	<p>Stubs of examples are:</p>
+	<ul>
+		<li>jQuery: <a href="jquery/UserService.js">user service</a> stub</li>
+		<li>Angular: <a href="angular/UserService.html">user service</a> stub</li>
+	</ul>
+
+
+	<h3>Flow/Route Controllers</h3>
+	<p>
+		This controllers controls the flow of the application.
+		If case of single-page apps (with multiple routes) they are also route controllers.
+		They decide what to activate in each situation.
+		They request to load some data (call storage/service controllers)
+		and starts views controllers with predefined data.
+		They have a global vision of the app.
+	</p>
+	<code>
+document.addEventListener('load', function() {
+	viewControllers.forEach(function(viewController) {
+		viewController.launch();
+	});
+});
+	</code>
+	<p>Stubs of examples are:</p>
+	<ul>
+		<li>jQuery: <a href="jquery/Application.js">launch controller</a> stub</li>
+		<li>Angular: there is no example for angular (angular itself acts of flow controller because we have no routes)</li>
 	</ul>
 
 </body>
